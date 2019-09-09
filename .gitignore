@@ -9,6 +9,9 @@
 !.vscode/launch.json
 !.vscode/extensions.json### DotnetCore ###
 
+### Visual Studioo for Mac ###
+.vs/*
+
 # .NET Core build and publish folders
 **/bin/
 **/obj/
