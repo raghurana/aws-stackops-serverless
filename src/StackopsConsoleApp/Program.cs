@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using StackopsCore;
 
 namespace StackopsConsoleApp
@@ -11,7 +12,10 @@ namespace StackopsConsoleApp
             {
                 using(var scope = DependencyInjection.Init())
                 {
-                
+                    var configFileFullPath  = Path.GetFullPath("config/sample-stacks.json", Environment.CurrentDirectory);
+                    var allConfiguredStacks = StacksFactory.GetStacksFromJsonConfig(configFileFullPath);
+                    
+
                 }
             }
 

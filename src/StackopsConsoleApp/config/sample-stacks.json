@@ -1,0 +1,8 @@
+[
+    {
+        "Name" : "Non-Prod-Stack-1",
+        "Ec2InstanceIds" : [
+            "i-12345"
+        ]
+    }
+]   
