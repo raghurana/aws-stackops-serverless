@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.EC2" Version="3.3.127.4" />
     <PackageReference Include="Mediatr" Version="7.0.0" />
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="3.0.1" />

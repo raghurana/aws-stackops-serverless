@@ -1,13 +1,14 @@
 using MediatR;
 
-public class Ec2IdsCommand : IRequest
+public class Ec2IdsCommand : IRequest<bool>
 {
-    private readonly string[] instanceIds;
-    private readonly CommandType commandType;
+    public string[] InstanceIds { get; private set; }
+
+    public CommandType CommandType { get; private set; }
 
     public Ec2IdsCommand(string[] ec2InstanceIds, CommandType commandType)
     {
-        this.instanceIds = ec2InstanceIds;
-        this.commandType = commandType;
+        InstanceIds = ec2InstanceIds;
+        CommandType = commandType;
     }
 }
