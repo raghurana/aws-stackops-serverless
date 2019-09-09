@@ -13,9 +13,10 @@ namespace StackopsConsoleApp
             {
                 using(var scope = DependencyInjection.Init())
                 {
-                    var mediator = scope.Resolve<IMediator>();
-                    var command  = new Ec2IdsCommand(new [] { "" }, CommandType.Stop);
-                    mediator.Send(command).Wait();
+                    var mediator    = scope.Resolve<IMediator>();
+                    var instanceIds = new [] { "" };
+                    var command     = new Ec2IdsCommand(instanceIds, CommandType.Stop);
+                    var t           = mediator.Send(command).Result;
                 }
             }
 
