@@ -1,10 +1,19 @@
-﻿using System;
+﻿using Autofac;
+using MediatR.Extensions.Autofac.DependencyInjection;
+
 namespace StackopsCore
 {
-    public class DependencyInjection
+    public static class DependencyInjection
     {
-        public DependencyInjection()
+        public static ILifetimeScope Init()
         {
+            var builder = new ContainerBuilder();
+            
+            builder
+                .AddMediatR(typeof(DependencyInjection)
+                .Assembly);
+
+            return builder.Build().BeginLifetimeScope();
         }
     }
 }

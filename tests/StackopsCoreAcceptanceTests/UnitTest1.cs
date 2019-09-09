@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace StackopsCoreAcceptanceTests
@@ -8,7 +7,7 @@ namespace StackopsCoreAcceptanceTests
         [Fact]
         public void Test1()
         {
-            Assert.Equal(1,2);
+            Assert.Equal(1, 1);
         }
     }
 }

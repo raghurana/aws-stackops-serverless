@@ -4,6 +4,10 @@
     <ProjectReference Include="..\StackopsCore\StackopsCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Mediatr" Version="7.0.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
