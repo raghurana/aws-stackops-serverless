@@ -21,8 +21,7 @@ namespace StackopsCore
             builder
                 .RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                 .AssignableTo<IServiceHandler>()
-                .AsImplementedInterfaces()
-                .InstancePerRequest();
+                .AsImplementedInterfaces();
 
             builder
                 .RegisterInstance(new AmazonEC2Client(DefaultRegion))

@@ -10,7 +10,12 @@ namespace StackopsCore.Extensions
     {
         public static async Task<string[]> FilterInstancesByState(this IAmazonEC2 ec2Client, IEnumerable<string> instanceIds, string stateName)
         {
-            var describeRequest  = new DescribeInstanceStatusRequest {InstanceIds = new List<string>(instanceIds)};
+            var describeRequest = new DescribeInstanceStatusRequest
+            {
+                InstanceIds = new List<string>(instanceIds),
+                IncludeAllInstances = true
+            };
+
             var describeResponse = await ec2Client.DescribeInstanceStatusAsync(describeRequest);
 
             return describeResponse

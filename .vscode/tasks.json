@@ -11,10 +11,7 @@
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile",
-            "dependsOn": [
-                "aws_profile"
-            ]
+            "problemMatcher": "$msCompile"
         },
         {
             "label": "publish",

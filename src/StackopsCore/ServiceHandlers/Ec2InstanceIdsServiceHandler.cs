@@ -23,14 +23,20 @@ namespace StackopsCore.ServiceHandlers
 
         public async Task<int> StartStackService(Stack stack)
         {
-            var stoppedInstanceIds    = await ec2.FilterInstancesByState(stack.Ec2InstanceIds, AwsConstants.Ec2StoppedState);
+            var stoppedInstanceIds = await ec2.FilterInstancesByState(stack.Ec2InstanceIds, AwsConstants.Ec2StoppedState);
+            if(!stoppedInstanceIds.Any())
+                return 0;
+         
             var startInstanceResponse = await ec2.StartInstancesAsyncByIds(stoppedInstanceIds);
             return startInstanceResponse.StartingInstances.Count;
         }
 
         public async Task<int> StopStackService(Stack stack)
         {
-            var startedInstanceIds   = await ec2.FilterInstancesByState(stack.Ec2InstanceIds, AwsConstants.Ec2StartedState);
+            var startedInstanceIds = await ec2.FilterInstancesByState(stack.Ec2InstanceIds, AwsConstants.Ec2StartedState);
+            if(!startedInstanceIds.Any())
+                return 0;
+
             var stopInstanceResponse = await ec2.StopInstancesAsyncByIds(startedInstanceIds);
             return stopInstanceResponse.StoppingInstances.Count;
         }
