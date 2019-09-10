@@ -1,0 +1,110 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+
+  "Transform": "AWS::Serverless-2016-10-31",
+
+  "Description": "Stackops AWS Serverless App.",
+
+  "Mappings": {
+    "Config": {
+      "LambdaLimits": {
+        "LambdaMemorySize": 512,
+        "LambdaTimeoutSeconds": 300
+      },
+      "TriggerWeekdays8am": {
+        "CronString": "cron(0 22 ? * SUN-THU *)",
+        "Description": "Weekdays 8am"
+      },
+      "TriggerWeekdays6pm": {
+        "CronString": "cron(0 8 ? * MON-FRI *)",
+        "Description": "Weekdays 6pm"
+      }
+    }
+  },
+
+  "Resources": {
+
+    "MainLambdaRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "StackOpsMainLambdaPolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ec2:DescribeInstanceStatus",
+                    "ec2:StartInstances",
+                    "ec2:StopInstances"
+                  ],
+                  "Resource": [
+                    "*"
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    "arn:aws:logs:*:*:*"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+
+    "MainLambdaFunction": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "StackopsServerlessFunctions::StackopsServerlessFunctions.Functions::StackRequestHandler",
+        "Runtime": "dotnetcore2.2",
+        "CodeUri": "https://github.com/raghurana/aws-stackops-serverless",
+        "MemorySize": {
+          "Fn::FindInMap": [
+            "Config",
+            "LambdaLimits",
+            "LambdaMemorySize"
+          ]
+        },
+        "Timeout": {
+          "Fn::FindInMap": [
+            "Config",
+            "LambdaLimits",
+            "LambdaTimeoutSeconds"
+          ]
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "MainLambdaRole",
+            "Arn"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -9,7 +9,12 @@
         public StackActionRequest(string stackName, string action)
         {
             StackName = stackName;
-            Action = action;
+            Action    = action;
+        }
+
+        public override string ToString()
+        {
+            return $"Stack: {StackName}, Action: {Action}";
         }
     }
 }
