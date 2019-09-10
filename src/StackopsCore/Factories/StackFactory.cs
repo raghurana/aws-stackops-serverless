@@ -5,9 +5,9 @@ using StackopsCore.Models;
 
 namespace StackopsCore.Factories
 {
-    public static class StacksFactory
+    public static class StackFactory
     {
-        public static IReadOnlyList<Stack> GetStacksFromJsonConfig(string configPath)
+        public static IList<Stack> CreateStacksFromJson(string configPath)
         {
             var jsonData = File.ReadAllText(configPath);
             return JsonConvert.DeserializeObject<Stack[]>(jsonData);
