@@ -21,5 +21,7 @@
 /node_modules
 /wwwroot/node_modules
 
+# Mac 
+**.DS_Store**
 
 # End of https://www.gitignore.io/api/code,dotnetcore

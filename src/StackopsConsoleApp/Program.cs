@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Reflection;
+using System;
 using System.IO;
 using StackopsCore;
 using StackopsCore.Factories;
@@ -11,21 +12,26 @@ namespace StackopsConsoleApp
     class Program
     {
         static void Main(string[] args)
-        {
-            if(args.Length != 2)
-                throw new ArgumentException("Expected two arguments 1) stack name 2) action.");    
-
-            try
+        { 
+           try
             {
+                var assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var configJsonPath   = Path.GetFullPath("stacks.json", assemblyLocation);
+
+                if(!File.Exists(configJsonPath))
+                    throw new FileNotFoundException($"Could not locate json config file at: {configJsonPath}. See Readme.md for structure of this file.");
+
+                if(args.Length != 2)
+                    throw new ArgumentException("Expected two arguments 1) stack name 2) action."); 
+
                 using(var scope = DependencyInjection.Init())
                 {
                     var actionRequest   = new StackActionRequest(args[0], args[1]);
-                    var configJsonPath  = Path.GetFullPath("config/sample-stacks.json", Environment.CurrentDirectory);
                     var allStacks       = StackFactory.CreateStacksFromJson(configJsonPath);
                     var mediatorRequest = StackRequestFactory.CreateMediatorRequest(actionRequest, allStacks);
 
                     scope.Resolve<IMediator>().Send(mediatorRequest).Wait();
-                    Console.WriteLine("Command Sent Successfully.");
+                    Console.WriteLine("Command executed successfully.");
                 }
             }
 
@@ -47,7 +53,8 @@ namespace StackopsConsoleApp
                 }
             }
 
-            Console.WriteLine("Please enter key to finish.");
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("Please enter key to terminate.");
             Console.ReadLine();
         }
     }
