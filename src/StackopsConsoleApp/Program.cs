@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using StackopsCore;
+using StackopsCore.Factories;
 
 namespace StackopsConsoleApp
 {

@@ -1,6 +1,9 @@
-public class Stack
+namespace StackopsCore.Models
 {
-    public string Name { get; set;}
+    public class Stack
+    {
+        public string Name { get; set; }
 
-    public string[] Ec2InstanceIds { get; set; }
+        public string[] Ec2InstanceIds { get; set; }
+    }
 }

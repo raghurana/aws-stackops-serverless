@@ -1,12 +1,16 @@
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using StackopsCore.Models;
 
-public static class StacksFactory
+namespace StackopsCore.Factories
 {
-    public static IReadOnlyList<Stack> GetStacksFromJsonConfig(string configPath)
+    public static class StacksFactory
     {
-        var jsonData = File.ReadAllText(configPath);
-        return JsonConvert.DeserializeObject<Stack[]>(jsonData);
+        public static IReadOnlyList<Stack> GetStacksFromJsonConfig(string configPath)
+        {
+            var jsonData = File.ReadAllText(configPath);
+            return JsonConvert.DeserializeObject<Stack[]>(jsonData);
+        }
     }
 }
