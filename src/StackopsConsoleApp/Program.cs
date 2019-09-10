@@ -1,7 +1,11 @@
-﻿using System;
+﻿using System.Linq;
+using System;
 using System.IO;
 using StackopsCore;
 using StackopsCore.Factories;
+using Autofac;
+using MediatR;
+using StackopsCore.Commands;
 
 namespace StackopsConsoleApp
 {
@@ -13,10 +17,10 @@ namespace StackopsConsoleApp
             {
                 using(var scope = DependencyInjection.Init())
                 {
-                    var configFileFullPath  = Path.GetFullPath("config/sample-stacks.json", Environment.CurrentDirectory);
-                    var allConfiguredStacks = StacksFactory.GetStacksFromJsonConfig(configFileFullPath);
-                    
-
+                    var jsonPath  = Path.GetFullPath("config/sample-stacks.json", Environment.CurrentDirectory);
+                    var allStacks = StacksFactory.GetStacksFromJsonConfig(jsonPath);
+                    var command   = new StartStackCommand(allStacks.First());
+                    scope.Resolve<IMediator>().Send(command).Wait();
                 }
             }
 

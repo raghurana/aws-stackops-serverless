@@ -2,6 +2,8 @@
 using Amazon;
 using Amazon.EC2;
 using MediatR.Extensions.Autofac.DependencyInjection;
+using System.Reflection;
+using StackopsCore.ServiceHandlers;
 
 namespace StackopsCore
 {
@@ -12,10 +14,16 @@ namespace StackopsCore
         public static ILifetimeScope Init()
         {
             var builder = new ContainerBuilder();
-            
+
             builder
                 .AddMediatR(typeof(DependencyInjection).Assembly);
-                
+
+            builder
+                .RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .AssignableTo<IServiceHandler>()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
+
             builder
                 .RegisterInstance(new AmazonEC2Client(DefaultRegion))
                 .As<IAmazonEC2>()
