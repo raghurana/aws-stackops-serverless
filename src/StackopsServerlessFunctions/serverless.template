@@ -81,9 +81,8 @@
     "MainLambdaFunction": {
       "Type": "AWS::Serverless::Function",
       "Properties": {
-        "Handler": "StackopsServerlessFunctions::StackopsServerlessFunctions.Functions::StackRequestHandler",
-        "Runtime": "dotnetcore2.2",
-        "CodeUri": "https://github.com/raghurana/aws-stackops-serverless",
+        "Handler": "not_needed",
+        "Runtime": "provided",
         "MemorySize": {
           "Fn::FindInMap": [
             "Config",

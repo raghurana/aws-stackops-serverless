@@ -40,3 +40,10 @@ Config Json File (file should be named stacks.json and placed in same directory 
         ]
     }
 ]
+
+Deploy Serverless Functions (from Terminal)
+==========================================
+
+Navigate to StackopsServerlessFunctions directory and run the command below:
+
+`dotnet lambda deploy-serverless`

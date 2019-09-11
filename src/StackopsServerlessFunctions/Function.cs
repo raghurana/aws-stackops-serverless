@@ -1,18 +1,30 @@
-using System.Net;
-using System.Collections.Generic;
 using Amazon.Lambda.Core;
+using Amazon.Lambda.RuntimeSupport;
 using Amazon.Lambda.Serialization.Json;
 using StackopsCore.Models;
-
-[assembly: LambdaSerializer(typeof(JsonSerializer))]
+using System;
+using System.Threading.Tasks;
 
 namespace StackopsServerlessFunctions
 {
-    public class Functions
+    public class Function
     {
-        public void StackRequestHandler(StackActionRequest request, ILambdaContext context)
+        private static async Task Main(string[] args)
         {
-            context.Logger.LogLine($"StackRequestHandler: {request}");
+            Func<StackActionRequest, ILambdaContext, string> func = FunctionHandler;
+
+            using(var handlerWrapper = HandlerWrapper.GetHandlerWrapper(func, new JsonSerializer()))
+            {
+                using(var bootstrap = new LambdaBootstrap(handlerWrapper))
+                {
+                    await bootstrap.RunAsync();
+                }
+            }
+        }
+
+        public static string FunctionHandler(StackActionRequest request, ILambdaContext context)
+        { 
+            return request.ToString();
         }
     }
 }
