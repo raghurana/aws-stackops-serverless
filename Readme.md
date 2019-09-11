@@ -7,7 +7,7 @@ Run all Tests (Terminal)
 ==============
 Run command below from root project folder:
 
-`dotnet test`
+`dotnet test --no-build`
 
 Run the ConsoleApp (Terminal)
 ==================
