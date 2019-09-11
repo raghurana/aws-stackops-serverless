@@ -1,0 +1,9 @@
+[
+    {
+        "Name" : "stack1",
+        "Ec2InstanceIds" : [
+            "i-0xxxxxxxxxxxxx",
+            "i-1xxxxxxxxxxxxx"
+        ]
+    }
+]
