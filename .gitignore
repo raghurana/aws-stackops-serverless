@@ -26,4 +26,4 @@
 
 # Serverless config for accidental commits.
 # TODO: Move this to AWS System manager params store and read at runtime.
-src/StackopsServerlessFunctions/stacks.json
+**stacks.json
