@@ -11,6 +11,9 @@ Run command below from root project folder:
 
 Run the ConsoleApp (Terminal)
 ==================
+
+Ensure there is a stacks.json file in the bin/Debug/netcoreapp*.*/ directory. See Config Json File section below for expected format for this file.
+
 Run command below from root project folder:
 
 `dotnet run -p src/StackopsConsoleApp stack1 start`
@@ -44,6 +47,8 @@ Config Json File (file should be named stacks.json and placed in same directory 
 Deploy Serverless Functions (from Terminal)
 ==========================================
 
-Navigate to StackopsServerlessFunctions directory and run the command below:
+Navigate to StackopsServerlessFunctions directory then, create a new file and name it stacks.json and copy the contents of the Config Json file above to use as a template for the contents of this file. Modify contents with correct instance ids. This file has been added to .gitignore to prevent any accidental commits. In the future this config will move to AWS SSM Param store.
+
+and finally run the command below:
 
 `dotnet lambda deploy-serverless`
