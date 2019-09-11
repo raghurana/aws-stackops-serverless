@@ -24,5 +24,3 @@
 # Mac 
 **.DS_Store**
 
-# Serverless config file for accidental commit 
-**/StackopsServerlessFunctions/stacks.json
