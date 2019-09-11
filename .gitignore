@@ -24,4 +24,6 @@
 # Mac 
 **.DS_Store**
 
-# End of https://www.gitignore.io/api/code,dotnetcore
+# Serverless config for accidental commits.
+# TODO: Move this to AWS System manager params store and read at runtime.
+src/StackopsServerlessFunctions/stacks.json
