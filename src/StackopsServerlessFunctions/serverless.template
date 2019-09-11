@@ -104,6 +104,39 @@
           ]
         }
       }
-    }
+    },
+
+    "StackStart": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+       "Description": { "Fn::FindInMap" : [ "Config", "TriggerWeekdays8am", "Description" ] },
+       "ScheduleExpression": { "Fn::FindInMap" : [ "Config", "TriggerWeekdays8am", "CronString" ] },
+       "State": "ENABLED",
+       "Targets": [
+         {
+           "Arn": { "Fn::GetAtt" : [ "MainLambdaFunction", "Arn" ] },
+           "Id": "StackStart",
+           "Input": "\"start\""
+         }
+       ]
+      }
+     },
+ 
+     "StackStop": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+       "Description": { "Fn::FindInMap" : [ "Config", "TriggerWeekdays6pm", "Description" ] },
+       "ScheduleExpression": { "Fn::FindInMap" : [ "Config", "TriggerWeekdays6pm", "CronString" ] },
+       "State": "ENABLED",
+       "Targets": [
+         {
+           "Arn": { "Fn::GetAtt" : [ "MainLambdaFunction", "Arn" ] },
+           "Id": "StackStop",
+           "Input": "\"stop\""
+         }
+       ]
+      }
+     }
+
   }
 }
