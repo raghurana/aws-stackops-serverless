@@ -24,6 +24,5 @@
 # Mac 
 **.DS_Store**
 
-# Serverless config for accidental commits.
-# TODO: Move this to AWS System manager params store and read at runtime.
-**stacks.json
+# Serverless config file for accidental commit 
+**/StackopsServerlessFunctions/stacks.json
