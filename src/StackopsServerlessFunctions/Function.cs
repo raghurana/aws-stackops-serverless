@@ -1,6 +1,9 @@
 using Amazon.Lambda.Core;
 using Amazon.Lambda.RuntimeSupport;
 using Amazon.Lambda.Serialization.Json;
+using Autofac;
+using MediatR;
+using StackopsCore;
 using StackopsCore.Factories;
 using StackopsCore.Models;
 using StackopsCore.Utils;
@@ -26,10 +29,17 @@ namespace StackopsServerlessFunctions
 
         public static string FunctionHandler(StackActionRequest request, ILambdaContext context)
         { 
-            var configJsonPath = FileUtils.GetAbsolutePathFromCurrentDirectory("stacks.json");
-            var allStacks      = StackFactory.CreateStacksFromJson(configJsonPath);
+            using(var scope = DependencyInjection.Init())
+            {
+                var configJsonPath  = FileUtils.GetAbsolutePathFromCurrentDirectory("stacks.json");
+                var allStacks       = StackFactory.CreateStacksFromJson(configJsonPath);
+                var mediatorRequest = StackRequestFactory.CreateMediatorRequest(request, allStacks);
 
-            return Newtonsoft.Json.JsonConvert.SerializeObject(allStacks);
+                scope.Resolve<IMediator>().Send(mediatorRequest).Wait();    
+            }
+
+            Console.WriteLine("Command executed successfully.");
+            return "Command executed successfully.";
         }
     }
 }
