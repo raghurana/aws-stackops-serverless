@@ -3,7 +3,6 @@ using StackopsCore;
 using StackopsCore.Factories;
 using Autofac;
 using MediatR;
-using StackopsCore.Models;
 using StackopsCore.Utils;
 
 namespace StackopsConsoleApp
@@ -14,15 +13,14 @@ namespace StackopsConsoleApp
         { 
            try
             {
-                if(args.Length != 2)
-                    throw new ArgumentException("Expected two arguments 1) stack name 2) action."); 
+                if(args.Length < 1)
+                    throw new ArgumentException("Expected argument action. eg:- start, stop"); 
 
                 using(var scope = DependencyInjection.Init())
                 {
-                    var actionRequest   = new StackActionRequest(args[0], args[1]);
                     var configJsonPath  = FileUtils.GetAbsolutePathFromCurrentDirectory("stacks.json");
                     var allStacks       = StackFactory.CreateStacksFromJson(configJsonPath);
-                    var mediatorRequest = StackRequestFactory.CreateMediatorRequest(actionRequest, allStacks);
+                    var mediatorRequest = StackRequestFactory.CreateMediatorRequest(allStacks, args[0]);
 
                     scope.Resolve<IMediator>().Send(mediatorRequest).Wait();
                     Console.WriteLine("Command executed successfully.");

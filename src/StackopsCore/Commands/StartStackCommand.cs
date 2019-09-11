@@ -5,11 +5,11 @@ namespace StackopsCore.Commands
 {
     public class StartStackCommand : IRequest
     {
-        public Stack StackToStart { get; }
+        public Stack[] StacksToStart { get; }
 
-        public StartStackCommand(Stack stackToStart)
+        public StartStackCommand(Stack[] stacksToStart)
         {
-            StackToStart = stackToStart;
+            StacksToStart = stacksToStart;
         }
     }
 }

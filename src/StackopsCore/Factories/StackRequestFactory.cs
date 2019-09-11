@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using StackopsCore.Models;
 using MediatR;
 using StackopsCore.Commands;
@@ -10,20 +8,15 @@ namespace StackopsCore.Factories
 {
     public static class StackRequestFactory
     {
-        public static IRequest CreateMediatorRequest(StackActionRequest request, IList<Stack> allStacks)
+        public static IRequest CreateMediatorRequest(Stack[] allStacks, string action)
         {
-            var matchedStack = allStacks.FirstOrDefault(s => s.Name.EqualsIgnoreCase(request.StackName));
+            if(action.EqualsIgnoreCase("start"))
+                return new StartStackCommand(allStacks);
 
-            if(matchedStack == null)
-                throw new ArgumentException($"Could not find a matching stack with name {request.StackName}");
+            if(action.EqualsIgnoreCase("stop"))
+                return new StopStackCommand(allStacks);
 
-            if(request.Action.EqualsIgnoreCase("start"))
-                return new StartStackCommand(matchedStack);
-
-            if(request.Action.EqualsIgnoreCase("stop"))
-                return new StopStackCommand(matchedStack);
-
-            throw new ArgumentException($"Unknown stack action {request.Action}");
+            throw new ArgumentException($"Unknown stack action {action}");
         }
     }
 }

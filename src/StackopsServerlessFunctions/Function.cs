@@ -16,7 +16,7 @@ namespace StackopsServerlessFunctions
     {
         private static async Task Main(string[] args)
         {
-            Func<StackActionRequest, ILambdaContext, string> func = FunctionHandler;
+            Func<string, ILambdaContext, string> func = FunctionHandler;
 
             using(var handlerWrapper = HandlerWrapper.GetHandlerWrapper(func, new JsonSerializer()))
             {
@@ -27,13 +27,13 @@ namespace StackopsServerlessFunctions
             }
         }
 
-        public static string FunctionHandler(StackActionRequest request, ILambdaContext context)
+        public static string FunctionHandler(string actionRequest, ILambdaContext context)
         { 
             using(var scope = DependencyInjection.Init())
             {
                 var configJsonPath  = FileUtils.GetAbsolutePathFromCurrentDirectory("stacks.json");
                 var allStacks       = StackFactory.CreateStacksFromJson(configJsonPath);
-                var mediatorRequest = StackRequestFactory.CreateMediatorRequest(request, allStacks);
+                var mediatorRequest = StackRequestFactory.CreateMediatorRequest(allStacks, actionRequest);
 
                 scope.Resolve<IMediator>().Send(mediatorRequest).Wait();    
             }

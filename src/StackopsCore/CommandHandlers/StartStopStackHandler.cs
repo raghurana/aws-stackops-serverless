@@ -20,9 +20,12 @@ namespace StackopsCore.CommandHandlers
 
         public async Task<Unit> Handle(StartStackCommand request, CancellationToken cancellationToken)
         {
-            foreach(var handler in serviceHandlers.Where(h => h.CanHandle(request.StackToStart)))
+            foreach(var stack in request.StacksToStart)
             {
-                await handler.StartStackService(request.StackToStart);
+                foreach(var handler in serviceHandlers.Where(h => h.CanHandle(stack)))
+                {
+                    await handler.StartStackService(stack);
+                }
             }
 
             return Unit.Value;
@@ -30,9 +33,12 @@ namespace StackopsCore.CommandHandlers
 
         public async Task<Unit> Handle(StopStackCommand request, CancellationToken cancellationToken)
         {
-            foreach(var handler in serviceHandlers.Where(h => h.CanHandle(request.StackToStop)))
+            foreach(var stack in request.StacksToStop)
             {
-                await handler.StopStackService(request.StackToStop);
+                foreach(var handler in serviceHandlers.Where(h => h.CanHandle(stack)))
+                {
+                    await handler.StopStackService(stack);
+                }
             }
 
             return Unit.Value;

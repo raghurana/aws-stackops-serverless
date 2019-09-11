@@ -16,7 +16,7 @@ Ensure there is a stacks.json file in the bin/Debug/netcoreapp*.*/ directory. Se
 
 Run command below from root project folder:
 
-`dotnet run -p src/StackopsConsoleApp stack1 start`
+`dotnet run -p src/StackopsConsoleApp start`
 
 in watch mode 
 -------------

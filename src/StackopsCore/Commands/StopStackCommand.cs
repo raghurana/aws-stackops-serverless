@@ -5,11 +5,11 @@ namespace StackopsCore.Commands
 {
     public class StopStackCommand : IRequest
     {
-        public Stack StackToStop { get; }
+        public Stack[] StacksToStop { get; }
 
-        public StopStackCommand(Stack stackToStop)
+        public StopStackCommand(Stack[] stacksToStop)
         {
-            StackToStop = stackToStop;
+            StacksToStop = stacksToStop;
         }
     }
 }
