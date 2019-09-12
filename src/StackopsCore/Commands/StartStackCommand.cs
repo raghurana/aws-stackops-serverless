@@ -7,7 +7,7 @@ namespace StackopsCore.Commands
     {
         public Stack[] StacksToStart { get; }
 
-        public StartStackCommand(Stack[] stacksToStart)
+        public StartStackCommand(params Stack[] stacksToStart)
         {
             StacksToStart = stacksToStart;
         }

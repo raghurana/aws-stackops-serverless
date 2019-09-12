@@ -7,7 +7,7 @@ namespace StackopsCore.Commands
     {
         public Stack[] StacksToStop { get; }
 
-        public StopStackCommand(Stack[] stacksToStop)
+        public StopStackCommand(params Stack[] stacksToStop)
         {
             StacksToStop = stacksToStop;
         }
