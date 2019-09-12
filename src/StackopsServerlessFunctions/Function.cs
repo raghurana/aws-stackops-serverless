@@ -58,7 +58,7 @@ namespace StackopsServerlessFunctions
                 var mediatorRequest = StackRequestFactory.CreateMediatorRequest(allStacks, actionRequest);
 
                 Console.WriteLine("Stacks affected:");
-                Array.ForEach( allStacks, stack => Console.WriteLine(stack.Name));
+                Array.ForEach(allStacks, stack => Console.WriteLine(stack.Name));
                 scope.Resolve<IMediator>().Send(mediatorRequest).Wait();    
             }
 
