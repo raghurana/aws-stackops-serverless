@@ -34,13 +34,8 @@ namespace StackopsCoreAcceptanceTests
             scope = DependencyInjection.Init(new MockAwsClientsModule(mockEc2));
         }
 
-        void AndGivenAllInstancesAreRunning()
+        void AndGivenAllInstancesAreStopped()
         {
-            var describeRequest = It.Is<DescribeInstanceStatusRequest>( req => 
-                req.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[0]) &&
-                req.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[1]) &&
-                req.IncludeAllInstances == true );
-   
             var describeResponse = new DescribeInstanceStatusResponse
             {
                 InstanceStatuses = new List<InstanceStatus>
@@ -48,19 +43,33 @@ namespace StackopsCoreAcceptanceTests
                     new InstanceStatus 
                     { 
                         InstanceId = TestDataMother.StackOne.Ec2InstanceIds[0], 
-                        InstanceState = TestDataMother.Ec2StartedState
+                        InstanceState = TestDataMother.Ec2StoppedInstanceState
                     }, 
                     new InstanceStatus 
                     { 
                         InstanceId = TestDataMother.StackOne.Ec2InstanceIds[1], 
-                        InstanceState = TestDataMother.Ec2StartedState
+                        InstanceState = TestDataMother.Ec2StoppedInstanceState
                     }
                 }
             };
 
-            mockEc2
-                .Setup(ec2 => ec2.DescribeInstanceStatusAsync(describeRequest, default(CancellationToken)))
-                .ReturnsAsync(describeResponse);
+            mockEc2.Setup(ec2 => 
+                    ec2.DescribeInstanceStatusAsync
+                    (
+                        It.Is<DescribeInstanceStatusRequest>(req => 
+                            req.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[0])), default(CancellationToken))
+                    )
+                    .ReturnsAsync(describeResponse);
+
+             mockEc2
+                .Setup(ec2 => ec2.StartInstancesAsync(It.IsAny<StartInstancesRequest>(), default(CancellationToken)))
+                .ReturnsAsync(() => new StartInstancesResponse {
+                    StartingInstances = new List<InstanceStateChange>
+                    {
+                        new InstanceStateChange { InstanceId = TestDataMother.StackOne.Ec2InstanceIds[0] },
+                        new InstanceStateChange { InstanceId = TestDataMother.StackOne.Ec2InstanceIds[1] },
+                    }
+                });
         }
         
         async Task WhenSentToProgram()
@@ -72,11 +81,8 @@ namespace StackopsCoreAcceptanceTests
 
         void ThenVerifyEc2StartInstancesWasInvoked()
         {
-            var checkRequest = It.Is<StartInstancesRequest>(r => 
-                r.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[0]) && 
-                r.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[1]));
-
-            mockEc2.Verify(ec2 => ec2.StartInstancesAsync(checkRequest, default(CancellationToken)));
+             mockEc2.Verify(ec2 => ec2.StartInstancesAsync(It.Is<StartInstancesRequest>(r => 
+                r.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[0])), default(CancellationToken)));
         }
 
         [Fact]

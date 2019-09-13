@@ -17,11 +17,14 @@ namespace StackopsCoreAcceptanceTests.Helpers
                 }
             };
 
-        public static InstanceState Ec2StartedState = 
-            new InstanceState
-            {
-                 Name = AwsConstants.Ec2StartedState
-            };
-        
+        public static InstanceState Ec2StoppedInstanceState = new InstanceState
+        {
+            Name = AwsConstants.Ec2StoppedState
+        };
+
+        public static InstanceState Ec2StartedInstanceState = new InstanceState
+        {
+            Name = AwsConstants.Ec2StartedState
+        };        
     }
 }
