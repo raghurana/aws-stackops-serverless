@@ -48,7 +48,11 @@ namespace StackopsCoreAcceptanceTests
             };
 
             mockEc2
-                .Setup(ec2 => ec2.DescribeInstanceStatusAsync(It.Is<DescribeInstanceStatusRequest>(req => req.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[0])), default(CancellationToken)))
+                .Setup(ec2 => ec2.DescribeInstanceStatusAsync(It.Is<DescribeInstanceStatusRequest>(req => 
+                        req.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[0]) &&
+                        req.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[1]) && 
+                        req.IncludeAllInstances == true), 
+                        default(CancellationToken)))
                 .ReturnsAsync(describeResponse);
 
              mockEc2
@@ -69,7 +73,8 @@ namespace StackopsCoreAcceptanceTests
              mockEc2.Verify(ec2 => 
                 ec2.StartInstancesAsync(
                     It.Is<StartInstancesRequest>(r => 
-                        r.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[0])), 
+                        r.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[0]) &&  
+                        r.InstanceIds.Contains(TestDataMother.StackOne.Ec2InstanceIds[1]) ), 
                         default(CancellationToken)));
 
             scope.Dispose();
