@@ -8,7 +8,6 @@ using MediatR;
 using Moq;
 using StackopsCore;
 using StackopsCore.Commands;
-using StackopsCore.Models;
 using StackopsCoreAcceptanceTests.Helpers;
 using TestStack.BDDfy;
 using Xunit;
@@ -18,7 +17,6 @@ namespace StackopsCoreAcceptanceTests
 {
     public class StartSingleStackTest
     {
-        private Stack[] stacksToStart;
         private StartStackCommand startStackCommand;
         private ILifetimeScope scope;
         private Mock<IAmazonEC2> mockEc2;
